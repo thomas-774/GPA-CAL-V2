@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student GPA Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-wrapper">
+
+  <!-- ══════════════════════════════════════════
+       APP HEADER
+       ══════════════════════════════════════════ -->
+  <header class="app-header">
+    <div class="logo-icon">🎓</div>
+    <div>
+      <h1>GPA Calculator</h1>
+      <p class="subtitle">Student Grade &amp; GPA Calculator v1.0</p>
+    </div>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 1: MAIN MENU
+         ══════════════════════════════════════════ -->
+    <section data-screen="main-menu">
+      <h2 class="screen-title">What would you like to do?</h2>
+      <p class="screen-sub">Select a calculation type to get started.</p>
+
+      <div class="menu-grid">
+        <!-- Convert mark to grade -->
+        <button class="menu-card" id="btn-convert">
+          <span class="card-icon">🔢</span>
+          <span class="card-title">Convert Mark to Grade</span>
+          <span class="card-desc">Enter a numeric mark and get its letter grade equivalent.</span>
+        </button>
+
+        <!-- GPA by marks -->
+        <button class="menu-card" id="btn-gpa-marks">
+          <span class="card-icon">📊</span>
+          <span class="card-title">GPA by Marks</span>
+          <span class="card-desc">Enter numeric marks per course and calculate your semester GPA.</span>
+        </button>
+
+        <!-- GPA by letter grades -->
+        <button class="menu-card" id="btn-gpa-grades">
+          <span class="card-icon">🅰️</span>
+          <span class="card-title">GPA by Letter Grades</span>
+          <span class="card-desc">Enter letter grades per course and calculate your semester GPA.</span>
+        </button>
+      </div>
+
+      <!-- Grading Scale Reference -->
+      <details style="margin-top:2.5rem;">
+        <summary style="cursor:pointer;color:var(--text-3);font-size:0.82rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.06em;">
+          View Grading Scale
+        </summary>
+        <div class="list-table-wrap" style="margin-top:.75rem;">
+          <table class="list-table">
+            <thead><tr><th>Mark Range</th><th>Letter Grade</th><th>Grade Points</th></tr></thead>
+            <tbody>
+              <tr><td>96 – 100</td><td><span class="grade-badge">A+</span></td><td>4.0</td></tr>
+              <tr><td>92 – 95.9</td><td><span class="grade-badge">A</span></td><td>3.7</td></tr>
+              <tr><td>88 – 91.9</td><td><span class="grade-badge">A-</span></td><td>3.4</td></tr>
+              <tr><td>84 – 87.9</td><td><span class="grade-badge">B+</span></td><td>3.2</td></tr>
+              <tr><td>80 – 83.9</td><td><span class="grade-badge">B</span></td><td>3.0</td></tr>
+              <tr><td>76 – 79.9</td><td><span class="grade-badge">B-</span></td><td>2.8</td></tr>
+              <tr><td>72 – 75.9</td><td><span class="grade-badge">C+</span></td><td>2.6</td></tr>
+              <tr><td>68 – 71.9</td><td><span class="grade-badge">C</span></td><td>2.4</td></tr>
+              <tr><td>64 – 67.9</td><td><span class="grade-badge">C-</span></td><td>2.2</td></tr>
+              <tr><td>60 – 63.9</td><td><span class="grade-badge">D+</span></td><td>2.0</td></tr>
+              <tr><td>55 – 59.9</td><td><span class="grade-badge">D</span></td><td>1.5</td></tr>
+              <tr><td>50 – 54.9</td><td><span class="grade-badge">D-</span></td><td>1.0</td></tr>
+              <tr><td>0 – 49.9</td><td><span class="grade-badge">F</span></td><td>0.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 2: GRADE CONVERSION
+         ══════════════════════════════════════════ -->
+    <section data-screen="grade-conversion">
+      <h2 class="screen-title">Convert Mark to Grade</h2>
+      <p class="screen-sub">Enter a numeric mark (0–100) to see the letter grade.</p>
+      <!-- Populated dynamically by GradeConversionScreen -->
+      <div id="conversion-form"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 3: COURSE INPUT
+         ══════════════════════════════════════════ -->
+    <section data-screen="course-input">
+      <h2 class="screen-title">Enter Course Details</h2>
+      <p class="screen-sub">Fill in the information for each course.</p>
+      <!-- Populated dynamically by CourseInputScreen -->
+      <div id="course-input-container"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 4: COURSE LIST
+         ══════════════════════════════════════════ -->
+    <section data-screen="course-list">
+      <h2 class="screen-title">Course List</h2>
+      <p class="screen-sub">Review or remove courses from the current session.</p>
+      <!-- Populated dynamically by CourseListScreen -->
+      <div id="course-list-container"></div>
+      <div class="action-row" style="margin-top:1rem;">
+        <button class="btn btn-ghost" onclick="UI.resultScreen.redirectToMainMenu()">← Back to Menu</button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SCREEN 5: RESULT
+         ══════════════════════════════════════════ -->
+    <section data-screen="result">
+      <h2 class="screen-title">Results</h2>
+      <!-- Populated dynamically by ResultScreen -->
+      <div id="result-container"></div>
+    </section>
+
+  </main>
+
+</div>
+
+  <!-- ── Scripts: load order matters ── -->
+  <script src="models.js"></script>
+  <script src="controllers.js"></script>
+  <script src="screens.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

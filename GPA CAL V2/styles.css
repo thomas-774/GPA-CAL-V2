@@ -1,0 +1,573 @@
+/* ============================================================
+   Student GPA Calculator — Stylesheet
+   Design tone: academic-clean, editorial, confident
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── Variables ─────────────────────────────────────────────── */
+:root {
+  --bg:          #0f1117;
+  --surface:     #181c27;
+  --surface-2:   #1f2435;
+  --surface-3:   #262d42;
+  --border:      #2e3650;
+  --border-soft: #232840;
+
+  --accent:      #4f8ef7;
+  --accent-dim:  #2a4e96;
+  --accent-glow: rgba(79, 142, 247, 0.20);
+
+  --success:     #3ecf8e;
+  --warning:     #f5a623;
+  --danger:      #e5534b;
+  --info:        #a78bfa;
+
+  --text-1:  #e8eaf6;
+  --text-2:  #9aa3c0;
+  --text-3:  #606882;
+
+  --radius:  12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+
+  --font-body: 'Sora', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow: 0 4px 24px rgba(0,0,0,0.45);
+  --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
+}
+
+/* ── Reset & Base ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-1);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ────────────────────────────────────────────────── */
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+
+.app-header .logo-icon {
+  width: 36px; height: 36px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+
+.app-header h1 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+}
+
+.app-header .subtitle {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+
+.app-main {
+  flex: 1;
+  padding: 2.5rem 1.5rem;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Screens ───────────────────────────────────────────────── */
+[data-screen] {
+  display: none;
+  animation: fadeIn 0.25s ease;
+}
+[data-screen].active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.screen-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
+  color: var(--text-1);
+}
+
+.screen-sub {
+  font-size: 0.875rem;
+  color: var(--text-3);
+  margin-bottom: 2rem;
+}
+
+/* ── Main Menu ─────────────────────────────────────────────── */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.menu-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent-glow);
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: inherit;
+}
+
+.menu-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.menu-card:hover::before { opacity: 1; }
+
+.menu-card .card-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.menu-card .card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.menu-card .card-desc {
+  font-size: 0.8rem;
+  color: var(--text-3);
+  line-height: 1.4;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #6ba0ff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-secondary {
+  background: var(--surface-3);
+  color: var(--text-1);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--surface-2); border-color: var(--accent); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { color: var(--text-1); border-color: var(--text-2); }
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+/* ── Form Fields ───────────────────────────────────────────── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.field-group label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.field-group input {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: 0.925rem;
+  padding: 0.6rem 0.85rem;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+.field-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.field-group input::placeholder { color: var(--text-3); }
+
+/* Number input arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { opacity: 0.4; }
+
+/* ── Course Cards ──────────────────────────────────────────── */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.course-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  transition: border-color 0.15s;
+}
+
+.course-card:hover { border-color: var(--border-soft); }
+
+.course-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.course-number {
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.btn-delete {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  border-radius: 6px;
+  width: 26px; height: 26px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+
+.btn-delete:hover {
+  background: rgba(229, 83, 75, 0.15);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ── Error messages ────────────────────────────────────────── */
+.error-msg {
+  background: rgba(229, 83, 75, 0.12);
+  border: 1px solid rgba(229, 83, 75, 0.35);
+  border-radius: var(--radius-sm);
+  color: #ff7b72;
+  font-size: 0.85rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.hidden { display: none !important; }
+
+/* ── Tables ────────────────────────────────────────────────── */
+.list-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin: 1.25rem 0;
+}
+
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.list-table thead {
+  background: var(--surface-2);
+}
+
+.list-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+
+.list-table td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-2);
+}
+
+.list-table tbody tr:last-child td { border-bottom: none; }
+
+.list-table tbody tr:hover { background: var(--surface-2); }
+
+.totals-row td {
+  background: var(--surface-2);
+  color: var(--text-1);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Grade Badges ──────────────────────────────────────────── */
+.grade-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: var(--surface-3);
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+
+.grade-big {
+  font-size: 2.5rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 12px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-delete-list {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  border-radius: 5px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-delete-list:hover {
+  background: rgba(229, 83, 75, 0.12);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ── Result Screen ─────────────────────────────────────────── */
+.result-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.result-mode {
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.gpa-display {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 3rem;
+  margin: 0.5rem auto 0.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.gpa-display::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.gpa-excellent { border-color: var(--success); }
+.gpa-excellent::after { background: radial-gradient(ellipse at 50% 0%, rgba(62, 207, 142, 0.15) 0%, transparent 70%); }
+.gpa-good     { border-color: var(--accent); }
+.gpa-average  { border-color: var(--warning); }
+.gpa-average::after { background: radial-gradient(ellipse at 50% 0%, rgba(245, 166, 35, 0.15) 0%, transparent 70%); }
+.gpa-low      { border-color: var(--danger); }
+.gpa-low::after { background: radial-gradient(ellipse at 50% 0%, rgba(229, 83, 75, 0.15) 0%, transparent 70%); }
+
+.gpa-label {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.25rem;
+}
+
+.gpa-value {
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text-1);
+}
+
+.gpa-scale {
+  font-size: 0.875rem;
+  color: var(--text-3);
+  margin-top: 0.25rem;
+}
+
+.gpa-status {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  margin-top: 0.25rem;
+}
+
+/* ── Grade Conversion Result ───────────────────────────────── */
+.conversion-result {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 3rem;
+  margin: 0.5rem auto;
+  min-width: 260px;
+}
+
+.conv-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.conv-label {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.conv-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.conv-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.conv-row.highlight .conv-value { color: var(--success); }
+
+/* ── Course Input Screen ───────────────────────────────────── */
+#course-input-container .field-group {
+  max-width: 300px;
+}
+
+/* ── Grade Conversion Screen ───────────────────────────────── */
+#conversion-form {
+  max-width: 420px;
+}
+
+/* ── Empty states ──────────────────────────────────────────── */
+.empty-msg {
+  color: var(--text-3);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border); }
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .app-main { padding: 1.5rem 1rem; }
+  .gpa-value { font-size: 3rem; }
+  .gpa-display { padding: 1.25rem 2rem; }
+  .menu-grid { grid-template-columns: 1fr; }
+  .courses-grid { grid-template-columns: 1fr; }
+}
